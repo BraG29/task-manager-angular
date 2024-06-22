@@ -1,6 +1,6 @@
 # TaskManagerAngular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.5.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.5 and update to version 18.0.5.
 
 ## Development server
 
@@ -8,20 +8,20 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng generate component components/component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Also, can be abbreviated like `ng g c components/component-name`. Some things like services are automatically named with a "Service" at the of the end of the class name, so you don't need 
+to put the "service" word in the name: `ng g s services/auth` in this case the class will be named as AuthService by default
 
-## Build
+## Configuration File
+In src/assets/config.json you can find some variables that will be used in the development env. 
+One of them is for example `"apiUrl"`, you could change this if you need for the api url in your machine, for example: 
+```json
+{
+  "apiUrl": "localhost:8080"
+}
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## First example
+To test the application, after you deploy it with `ng serve` you can go to http://localhost:4200 and try to log in.
+You should use real user credential in the api database from server side (PHP). If is all ok you should see a blank page
+with the only text: "home-page works!".

@@ -1,1 +1,39 @@
-<p>login-form works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Iniciar Sesión</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="loginForm" (submit)="submitLogin()">
+
+      <!-- Email -->
+      <mat-form-field>
+        <input matInput placeholder="pepe@example.com" formControlName="email">
+        @if (email?.errors?.['required'] && email?.touched){
+          <mat-error>
+            El campo Email es obligatorio
+          </mat-error>
+        }
+        @if (email?.errors?.['email'] && email?.touched){
+          <mat-error>
+            El campo Email no es correcto
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field>
+        <input matInput type="password" placeholder="123" formControlName="password">
+        @if ( password?.errors?.['required'] && password?.touched){
+          <mat-error>
+            El campo Password es obligatorio
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Acceder</button>
+
+    </form>
+
+  </mat-card-content>
+</mat-card>
