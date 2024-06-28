@@ -1,0 +1,43 @@
+<div class="d-flex flex-column h-100">
+    <form [formGroup]="profileForm" (submit)="submitProfile()">
+        <div class="container aa">
+            <div class="card bb">
+                <div class="card-header">
+                    <h1 class="card-title">Datos del Usuario</h1>
+                </div>
+                <div class="card-body">
+
+                    <label for="nameId" class="form-label">Nombre del Usuario: </label>
+                    <p id="nameId" class="card-text text-lg-start">{{ name }}</p>
+                    <input matInput class="form-control form-control-lg" type="text" aria-label="Nombre del Usuario: "
+                        formControlName="name">
+                    @if(name?.errors?.['required'] && name?.touched){
+                    <div class="text-danger">
+                        El campo Nombre es obligatorio
+                    </div>
+                    }
+
+                    <label for="emailId" class="form-label">Correo: </label>
+                    <p id="emailId" class="card-text text-lg-start">{{ email }}</p>
+                    <input matInput class="form-control form-control-lg" type="text" aria-label="Correo: " formControlName="email">
+                    @if(email?.errors?.['required'] && email?.touched){
+                    <div class="text-danger">
+                        El campo Email es obligatorio
+                    </div>
+                    }
+
+                    <label for="passwordId" class="form-label">Contraseña: </label>
+                    <p id="passwordId" class="card-text text-lg-start">{{ password }}</p>
+                    <input matInput class="form-control form-control-lg" type="password" aria-label="Contraseña: " formControlName="password">
+                    @if(password?.errors?.['required'] && password?.touched){
+                    <div class="text-danger">
+                        El campo Contraseña es obligatorio
+                    </div>
+                    }
+
+                    <button type="submit" mat-raised-button class="cc" [disabled]="profileForm.invalid">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

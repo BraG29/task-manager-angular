@@ -1,0 +1,33 @@
+<div class="d-flex flex-column h-100">
+  <div class="container aa">
+    <div class="card bb">
+      <div class="card-header">
+        <h1 class="card-title">Datos de una tarea</h1>
+      </div>
+      <div class="card-body">
+
+        <!-- Display Variables -->
+        <p class="card-text text-lg-start">Nombre: {{ Nombre }}</p>
+        <p class="card-text text-lg-start">Descripción: {{ Descripcion }}</p>
+        <p class="card-text text-lg-start">Fecha Limite: {{ FechaLimite }}</p>
+      </div>
+    </div>
+  </div>
+  <!-- Buttons -->
+
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-primary btn-lg" (click)="GuardarDatos()">Guardar Datos</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger btn-lg" (click)="EliminarTarea()">Eliminar Tarea</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-success btn-lg" (click)="FinalizarTarea()">Finalizar Tarea</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
