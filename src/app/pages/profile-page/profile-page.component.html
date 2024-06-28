@@ -7,34 +7,40 @@
                 </div>
                 <div class="card-body">
 
-                    <label for="nameId" class="form-label">Nombre del Usuario: </label>
-                    <p id="nameId" class="card-text text-lg-start">{{ name }}</p>
-                    <input matInput class="form-control form-control-lg" type="text" aria-label="Nombre del Usuario: "
+                    <label for="nameId" class="form-label">Nombre: </label>
+                    <input matInput class="form-control form-control-lg" type="text" aria-label="Nombre: "
                         formControlName="name">
-                    @if(name?.errors?.['required'] && name?.touched){
+                    @if(name?.value === '' && name?.touched){
                     <div class="text-danger">
-                        El campo Nombre es obligatorio
+                        El campo no puede estar vacio.
                     </div>
                     }
 
-                    <label for="emailId" class="form-label">Correo: </label>
-                    <p id="emailId" class="card-text text-lg-start">{{ email }}</p>
-                    <input matInput class="form-control form-control-lg" type="text" aria-label="Correo: " formControlName="email">
-                    @if(email?.errors?.['required'] && email?.touched){
+                    <br>
+
+                    <label for="lastNameId" class="form-label">Apellido: </label>
+                    <input matInput class="form-control form-control-lg" type="text" aria-label="Apellido: "
+                        formControlName="lastName">
+                    @if(lastName?.value === '' && lastName?.touched){
                     <div class="text-danger">
-                        El campo Email es obligatorio
+                        El campo no puede estar vacio.
                     </div>
                     }
+
+                    <br>
+                    <label for="emailId" class="form-label">Correo: </label>
+                    <input matInput class="form-control form-control-lg" type="text" aria-label="Correo: " formControlName="email">
+                    <br>
 
                     <label for="passwordId" class="form-label">Contraseña: </label>
-                    <p id="passwordId" class="card-text text-lg-start">{{ password }}</p>
                     <input matInput class="form-control form-control-lg" type="password" aria-label="Contraseña: " formControlName="password">
-                    @if(password?.errors?.['required'] && password?.touched){
+                    @if(password?.value === '' && password?.touched){
                     <div class="text-danger">
-                        El campo Contraseña es obligatorio
+                        El campo no puede estar vacio.
                     </div>
                     }
 
+                    <br>
                     <button type="submit" mat-raised-button class="cc" [disabled]="profileForm.invalid">Guardar Cambios</button>
                 </div>
             </div>
