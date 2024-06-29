@@ -4,6 +4,10 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
+import { AuthService } from '../../services/auth.service';
+import { IUser } from '../../models/user';
+import { IJWTDecode } from '../../models/jwtdecode';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-profile-page',
@@ -20,30 +24,60 @@ export class ProfilePageComponent implements OnInit {
   @Output()
   loginAction: EventEmitter<{}> = new EventEmitter<{}>();
   
-  constructor(private formBuilder: FormBuilder) {}
+  user : IUser | undefined;
+
+  jwtPayload : IJWTDecode | undefined;
+
+
+  constructor(private formBuilder: FormBuilder, private userService: AuthService) {}
 
   ngOnInit(): void {
+    
+    let token = sessionStorage.getItem('token');
+
+    if(token){
+      this.jwtPayload = jwtDecode(token);
+    }
+
     this.profileForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: [{ value: '', disabled: true }, [Validators.required]],
       password: ['', Validators.required]
     });
-  }
 
+    
+    this.userService.getUser(this.jwtPayload?.uid).subscribe({ 
+      next: (response: IUser) : void => {
+        this.user = response;
+        this.profileForm.patchValue({
+          name: this.user.name,
+          lastName: this.user.lastName,
+          password: this.user.password,
+          email: this.user.email
+        });
+      }
+     
+    })
+  }
   
   get name(){
     return this.profileForm.get('name');
   }
 
-  
-  get email(){
-    return this.profileForm.get('email');
+  get lastName(){
+    return this.profileForm.get('lastName');
   }
-
+  
   
   get password(){
     return this.profileForm.get('password');
   }
+
+  get email(){
+    return this.profileForm.get('email');
+  }
+
 
   submitProfile(){
     if(this.profileForm.valid){
