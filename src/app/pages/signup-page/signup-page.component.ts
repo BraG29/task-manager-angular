@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {SignupFormComponent} from "../../components/signup-form/signup-form.component";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {NavComponent} from "../../components/nav/nav.component";
+
 
 @Component({
   selector: 'app-signup-page',
   standalone: true,
   imports: [
-    SignupFormComponent
+    SignupFormComponent, NavComponent
   ],
   templateUrl: './signup-page.component.html',
   styleUrl: './signup-page.component.scss'

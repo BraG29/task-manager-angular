@@ -8,11 +8,13 @@ import { AuthService } from '../../services/auth.service';
 import { IUser } from '../../models/user';
 import { IJWTDecode } from '../../models/jwtdecode';
 import { jwtDecode } from 'jwt-decode';
+import {NavComponent} from "../../components/nav/nav.component";
+
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [MatCardModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButton],
+  imports: [MatCardModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButton, NavComponent],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

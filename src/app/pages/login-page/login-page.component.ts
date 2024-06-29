@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {LoginFormComponent} from "../../components/login-form/login-form.component";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {NavComponent} from "../../components/nav/nav.component";
+
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
   imports: [
-    LoginFormComponent
+    LoginFormComponent,NavComponent
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'

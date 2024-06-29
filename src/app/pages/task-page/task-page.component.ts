@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {NavComponent} from "../../components/nav/nav.component";
 
 @Component({
   selector: 'app-task-page',
   standalone: true,
-  imports: [],
+  imports: [NavComponent],
   templateUrl: './task-page.component.html',
   styleUrl: './task-page.component.scss'
 })
