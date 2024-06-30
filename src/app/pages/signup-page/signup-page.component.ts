@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {SignupFormComponent} from "../../components/signup-form/signup-form.component";
 import {Router} from "@angular/router";
-import {AuthService} from "../../services/auth.service";
+import { UserService } from '../../services/userServices/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup-page',
@@ -14,31 +15,43 @@ import {AuthService} from "../../services/auth.service";
 })
 export class SignupPageComponent implements OnInit{
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private userService: UserService) {
   }
 
   ngOnInit(): void {
-    let token = sessionStorage.getItem('token');
-
-    if(token){
-      console.log('token: ' + token);
-      this.router.navigate(['/home']);
-    }
   }
 
   signupUser(value: any) {
-    let {email, password} = value;
+    const { name, lastName, email,  password } = value;
 
-    this.authService.login(email, password).subscribe({
-      next: (response) => {
-        console.table(response);
-        if(response.token){
-          sessionStorage.setItem('token', response.token);
-          this.router.navigate(['/home']);
+      const userDTO = {
+        email, 
+        name,
+        lastName,
+        password
+      };
+
+      this.userService.createUser(userDTO).subscribe({
+        next: (response) => {
+          console.log('User created:', response);
+          //exito
+          Swal.fire({
+            icon: 'success',
+            title: 'Exito',
+            text: 'Cuenta creada con exito, un correo ha sido enviado a su casilla.'
+          })
+
+        },
+        error: (err) => {
+          console.error('Error al crear cuenta:', err);
+          //error
+          Swal.fire({
+            icon: 'error',
+            title:'Error',
+            text: 'Ha ocurrido un error al crear la cuenta'
+          })
+
         }
-      },
-      error: (e) => console.table(e),
-      complete: () => console.info('Petición de registro finalizada')
-    });
+      });
   }
 }

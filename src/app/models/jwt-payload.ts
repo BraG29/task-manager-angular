@@ -1,4 +1,4 @@
-export interface IJWTPayload {
+export interface IJWTPayLoad{
     iat: number,
     exp: number,
     uid: number,
