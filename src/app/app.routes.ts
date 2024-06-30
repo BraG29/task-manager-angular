@@ -5,6 +5,7 @@ import {SignupPageComponent} from "./pages/signup-page/signup-page.component";
 import { TaskPageComponent } from './pages/task-page/task-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { TaskListPageComponent } from './pages/task-list-page/task-list-page.component';
+import { CreateTaskPageComponent } from './pages/create-task-page/create-task-page.component';
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {tokenExistsGuard, tokenNoExists} from "./guards/token.guard";
 
@@ -44,5 +45,17 @@ export const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'profile',
+    component: ProfilePageComponent
+  },
+  {
+    path: 'tasklist',
+    component: TaskListPageComponent
+  },
+  {
+    path: 'createTask',
+    component: CreateTaskPageComponent
+  }
 
 ];
