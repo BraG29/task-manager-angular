@@ -16,10 +16,10 @@
         }
       </mat-form-field>
 
-      <!-- Surname -->
+      <!-- lastName -->
       <mat-form-field>
-        <input matInput placeholder="Pérez" formControlName="surname">
-        @if(surname?.errors?.['required'] && surname?.touched) {
+        <input matInput placeholder="Pérez" formControlName="lastName">
+        @if(lastName?.errors?.['required'] && lastName?.touched) {
           <mat-error>
             El campo Apellido es obligatorio
           </mat-error>
@@ -51,7 +51,10 @@
         }
       </mat-form-field>
 
-      <button type="submit" mat-raised-button color="primary" [disabled]="signupForm.invalid">Registrarse</button>
+      <button type="submit" mat-button mat-raised-button color="primary" [disabled]="signupForm.pristine" >Registrarse</button> <br>
+      
+      <p> ¿Ya tienes cuenta? <a href="http://192.168.1.15:4200/login"> Inicia sesion </a></p>
+
 
     </form>
   </mat-card-content>
