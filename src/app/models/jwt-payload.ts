@@ -1,4 +1,4 @@
-export interface IJWTDecode {
+export interface IJWTPayload {
     iat: number,
     exp: number,
     uid: number,
