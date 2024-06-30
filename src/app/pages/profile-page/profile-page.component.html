@@ -1,3 +1,5 @@
+<app-nav></app-nav>
+
 <div class="d-flex flex-column h-100">
     <form [formGroup]="profileForm" (submit)="submitProfile()">
         <div class="container aa">
@@ -41,7 +43,7 @@
                     }
 
                     <br>
-                    <button type="submit" mat-raised-button class="cc" [disabled]="profileForm.invalid">Guardar Cambios</button>
+                    <button type="submit" mat-raised-button class="cc" [disabled]="profileForm.pristine">Guardar Cambios</button>
                 </div>
             </div>
         </div>
