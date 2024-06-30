@@ -6,7 +6,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {MatButton} from "@angular/material/button";
 import { AuthService } from '../../services/auth.service';
 import { IUser } from '../../models/user';
-import { IJWTDecode } from '../../models/jwtdecode';
+import {IJWTPayload} from '../../models/jwt-payload';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { NavComponent } from '../../components/nav/nav.component';
@@ -21,20 +21,20 @@ import { NavComponent } from '../../components/nav/nav.component';
 })
 export class ProfilePageComponent implements OnInit {
   profileForm: FormGroup = new FormGroup({});
-  
-  
+
+
   @Output()
   loginAction: EventEmitter<{}> = new EventEmitter<{}>();
-  
+
   user : IUser | undefined;
 
-  jwtPayload : IJWTDecode | undefined;
+  jwtPayload : IJWTPayload | undefined;
 
 
   constructor(private formBuilder: FormBuilder, private userService: AuthService) {}
 
   ngOnInit(): void {
-    
+
     let token = sessionStorage.getItem('token');
 
     if(token){
@@ -48,8 +48,8 @@ export class ProfilePageComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    
-    this.userService.getUser(this.jwtPayload?.uid).subscribe({ 
+
+    this.userService.getUser(this.jwtPayload?.uid).subscribe({
       next: (response: IUser) : void => {
         this.user = response;
         this.profileForm.patchValue({
@@ -59,7 +59,7 @@ export class ProfilePageComponent implements OnInit {
           email: this.user.email
         });
       },
-      error: (err) => { 
+      error: (err) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -69,7 +69,7 @@ export class ProfilePageComponent implements OnInit {
       }
     });
   }
-  
+
   get name(){
     return this.profileForm.get('name');
   }
@@ -77,8 +77,8 @@ export class ProfilePageComponent implements OnInit {
   get lastName(){
     return this.profileForm.get('lastName');
   }
-  
-  
+
+
   get password(){
     return this.profileForm.get('password');
   }
@@ -103,7 +103,7 @@ export class ProfilePageComponent implements OnInit {
       }).then((result) => {
         if(result.isConfirmed){
           const { name, lastName, password } = this.profileForm.value; //data del form
-      
+
           const userDTO = {
             id: this.jwtPayload?.uid, //id del usuario en sesion
             name,
@@ -125,7 +125,7 @@ export class ProfilePageComponent implements OnInit {
             error: (err) => {
               //TODO alerta
               console.error('Error al actualizar usuario:', err);
-              
+
               //error
               Swal.fire({
                 icon: 'error',
