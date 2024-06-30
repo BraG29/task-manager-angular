@@ -4,9 +4,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
-import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/userServices/user.service';
 import { IUser } from '../../models/user';
-import {IJWTPayload} from '../../models/jwt-payload';
+import { IJWTPayLoad } from '../../models/jwt-payload';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { NavComponent } from '../../components/nav/nav.component';
@@ -28,10 +28,10 @@ export class ProfilePageComponent implements OnInit {
 
   user : IUser | undefined;
 
-  jwtPayload : IJWTPayload | undefined;
+  jwtPayload : IJWTPayLoad | undefined;
 
 
-  constructor(private formBuilder: FormBuilder, private userService: AuthService) {}
+  constructor(private formBuilder: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
 
