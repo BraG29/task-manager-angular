@@ -14,10 +14,18 @@
         </a>
       </div>
 
+      <div>
+        <a mat-list-item (click)="logOut()">
+          <mat-icon> logout </mat-icon>
+          <span class="aligned-with-icon">Logout</span>
+        </a>
+      </div>
+
       <div class="user-profile">
-        <button mat-button routerLink="/profile">
-          <span>Carlitos Velazquez</span>
-        </button>
+        <a mat-list-item routerLink="profile">
+          <mat-icon> account_circle </mat-icon>
+          <span class="aligned-with-icon">{{ userFullName }}</span>
+        </a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
