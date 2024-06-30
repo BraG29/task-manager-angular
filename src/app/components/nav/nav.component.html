@@ -2,26 +2,18 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-nav-list>
-
-        <a mat-list-item [routerLink]="['/']"> 
-
+        <a mat-list-item [routerLink]="['/']">
         <mat-icon> home </mat-icon>
-          
         <span class="aligned-with-icon">Home </span>
-        
         </a>
 
       <div>
-
         <a mat-list-item [routerLink]="['/home/dashboard']">
-          
-          <mat-icon> dashboard </mat-icon> 
-
+          <mat-icon> dashboard </mat-icon>
           <span class="aligned-with-icon">Dashboard</span>
-
         </a>
-
       </div>
+
       <div class="user-profile">
         <button mat-button routerLink="/profile">
           <span>Carlitos Velazquez</span>
@@ -36,6 +28,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
     }
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

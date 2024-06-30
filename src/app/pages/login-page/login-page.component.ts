@@ -41,4 +41,5 @@ export class LoginPageComponent implements OnInit{
       complete: () => console.info('Petición de Login finalizada')
     });
   }
+
 }
