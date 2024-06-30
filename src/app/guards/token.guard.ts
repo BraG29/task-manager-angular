@@ -2,7 +2,9 @@ import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
 import {TokenVerificationService} from "../services/token-verification.service";
 
-export const tokenGuard: CanActivateFn = (route, state) => {
+
+export const tokenExistsGuard: CanActivateFn = (route, state) => {
+
   const router = inject(Router);
   const isEnable = inject(TokenVerificationService).canActivate();
 
@@ -12,3 +14,15 @@ export const tokenGuard: CanActivateFn = (route, state) => {
 
   return isEnable;
 };
+
+export const tokenNoExists: CanActivateFn = (route, state) => {
+
+  const router = inject(Router);
+  const isEnable = !inject(TokenVerificationService).canActivate();
+
+  if(!isEnable){
+    router.navigate(['/home'])
+  }
+
+  return isEnable;
+}

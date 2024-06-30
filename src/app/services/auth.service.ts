@@ -28,7 +28,7 @@ export class AuthService {
     return this.http.post(this.configService.getConfig('apiUrl')+'/login', body);
   }
 
-
+  // TODO: Llevar estas operaciones a un UserService
   createUser(userDTO: Partial<IUser>): Observable<IUser>{
     return this.http.post<IUser>(this.configService.getConfig('apiUrl')+'/users', userDTO);
   }
@@ -41,6 +41,4 @@ export class AuthService {
     return this.http.put<IUser>(this.configService.getConfig('apiUrl')+'/updateUser', userDTO);
   }
 
-
-  
 }
