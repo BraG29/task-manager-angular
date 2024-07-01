@@ -1,33 +1,56 @@
 <div class="d-flex flex-column h-100">
-  <div class="container aa">
-    <div class="card bb">
-      <div class="card-header">
-        <h1 class="card-title">Datos de una tarea</h1>
-      </div>
-      <div class="card-body">
+  <form  [formGroup]="taskForm" (submit)="GuardarCambios()">
+    <div class="container aa">
+        <div class="card bb">
+          <div class="card-header">
+            <h1 class="card-title">Datos de una tarea</h1>
+          </div>
+ 
+          <label for="nameId" class="form-label">Nombre: </label>
+          <input matInput class="form-control form-control-lg" type="text" aria-label="Nombre: "
+              formControlName="name">
+          @if(name?.value === '' && name?.touched){
+          <div class="text-danger">
+              El campo no puede estar vacio.
+          </div>
+          }
 
-        <!-- Display Variables -->
-        <p class="card-text text-lg-start">Nombre: {{ Nombre }}</p>
-        <p class="card-text text-lg-start">Descripción: {{ Descripcion }}</p>
-        <p class="card-text text-lg-start">Fecha Limite: {{ FechaLimite }}</p>
-      </div>
-    </div>
-  </div>
-  <!-- Buttons -->
+          <br>
 
-  <footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn-primary btn-lg" (click)="GuardarDatos()">Guardar Datos</button>
+          <label for="descriptionId" class="form-label">Descripción: </label>
+          <textarea matInput class="form-control form-control-lg" rows="5" cols="50" aria-label="Descripción: "
+              formControlName="description"></textarea>
+          @if(description?.value === '' && description?.touched) {
+          <div class="text-danger">
+            El campo no puede estar vacio.
+          </div>
+          }
+
+          <br>
+
+          <label for="dateId" class="form-label">Fecha limite: </label>
+          <input matInput class="form-control form-control-lg" type="date" aria-label="Fecha: "
+              formControlName="date">
+          @if(date?.value === '' && date?.touched){
+          <div class="text-danger">
+              El campo no puede estar vacio.
+          </div>
+          }
+
+          <br>
+          @if(showButtonsResult){
+            <div class="col">
+              <button style="margin-right: 10px;"  type="submit" [disabled]="taskForm.pristine" class="btn btn-dark btn-lg">Guardar Cambios</button>
+  
+              <button style="margin-right: 10px;"  type="button" class="btn btn-danger btn-lg" (click)="EliminarTarea()">Eliminar Tarea</button>
+  
+              <button type="button" class="btn btn-success btn-lg" (click)="FinalizarTarea()">Finalizar Tarea</button>
+            </div>
+          }
+         
         </div>
-        <div class="col">
-          <button type="button" class="btn btn-danger btn-lg" (click)="EliminarTarea()">Eliminar Tarea</button>
-        </div>
-        <div class="col">
-          <button type="button" class="btn btn-success btn-lg" (click)="FinalizarTarea()">Finalizar Tarea</button>
-        </div>
-      </div>
     </div>
-  </footer>
+   
+  </form>
 </div>
+ 

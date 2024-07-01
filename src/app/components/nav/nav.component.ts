@@ -9,7 +9,7 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatFooterCell, MatFooterRow} from "@angular/material/table";
-import {IJWTPayload} from "../../models/jwt-payload";
+import {IJWTPayLoad} from "../../models/jwt-payload";
 import {jwtDecode} from "jwt-decode";
 
 @Component({
@@ -33,7 +33,7 @@ import {jwtDecode} from "jwt-decode";
   styleUrl: './nav.component.scss'
 })
 export class NavComponent implements OnInit{
-  jwtPayload: IJWTPayload | null= null;
+  jwtPayload: IJWTPayLoad | null= null;
   userFullName: string = '';
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

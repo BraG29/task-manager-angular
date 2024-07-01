@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Observable} from "rxjs";
 import {ConfigService} from "../config.service";
 import { IUser } from '../../models/user';
+import { ITask } from '../../models/task';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,17 @@ export class UserService {
   }
   
 
-  //esto va a task service
-  getTasks(id: number | undefined): Observable<any>{
-    return this.http.get<any>(this.configService.getConfig('apiUrl' + '/tasksByUser/' + id));
+  //esto va a task service //administrador
+  getTasks(id: number | undefined): Observable<ITask[]>{
+    return this.http.get<ITask[]>(this.configService.getConfig('apiUrl') + '/tasksByUser/' + id);
   }
 
+  getTask(id:number | undefined): Observable<ITask>{
+   return this.http.get<ITask>(this.configService.getConfig('apiUrl') + '/tasks/' + id); 
+  }
+
+  //esto va a project service
+  getProjectData(id: number | undefined) : Observable<any>{
+    return this.http.get<any>(this.configService.getConfig('apiUrl') + '/GetProjectData/' + id);
+  }
 }
