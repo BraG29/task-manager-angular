@@ -1,13 +1,10 @@
-import { IDate } from "./date";
+import {IDate} from "./date";
+import {ICreatable} from "./creatable";
+import {IProject} from "./project";
 
-export interface ITask {
-                id: number;
-                title: string;
-                description: string;
-                limitDate: IDate;
-                taskState: number;
-                project: number;
-                userID : number;
-                links: [];    
-            }
-            
+export interface ITask extends ICreatable{
+  limitDate: IDate,
+  taskState: number,
+  project: IProject,
+  userID: number,
+}
