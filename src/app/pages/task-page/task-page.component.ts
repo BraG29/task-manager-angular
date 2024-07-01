@@ -10,7 +10,7 @@ import {MatButton} from "@angular/material/button";
 import { ITask } from '../../models/task';
 import { IJWTPayLoad } from '../../models/jwt-payload';
 import { jwtDecode } from 'jwt-decode';
-import { formatDate } from '@angular/common';
+import { ILink } from '../../models/link';
 
 @Component({
   selector: 'app-task-page',
@@ -26,6 +26,8 @@ export class TaskPageComponent implements OnInit {
   taskId: string | null = null;
 
   task : ITask | undefined;
+
+  links : ILink[] = [];
   
   jwtPayload : IJWTPayLoad | undefined;
 
@@ -59,14 +61,13 @@ export class TaskPageComponent implements OnInit {
 
     this.userService.getTask(id).subscribe({
       next: (response) => {
-        console.table(response);  
-        this.task = response;
-        let array = response.links;
-        
-        if(this.showButtons(array)){
-          this.showButtonsResult = true;
-        }
 
+        this.task = response;
+
+        this.links = response.links;
+
+        this.showButtons(this.links)
+        
         let dateStr = this.task.limitDate.date.split(' '); //split de la fecha me quedo con el primero lugar del array.        
         this.taskForm.patchValue({
         name: this.task.title,
@@ -85,29 +86,39 @@ export class TaskPageComponent implements OnInit {
     });
   } 
   
-get name(){
-  return this.taskForm.get('name');
-}
+  get name(){
+    return this.taskForm.get('name');
+  }
 
-get description(){
-  return this.taskForm.get('description');
-}
+  get description(){
+    return this.taskForm.get('description');
+  }
 
-get date(){
-  return this.taskForm.get('date');
-}
+  get date(){
+    return this.taskForm.get('date');
+  }
 
-  //que rol puede editar.
-  showButtons(array: number[]) : boolean{
+  //mostrar botones
+  showButtons(array: ILink[] | undefined) : boolean{
     
+    console.table('Array parametro'+array);
+
+    if (!array) {
+      return false;
+    }
+    let userId = this.jwtPayload?.uid;
+
     //recorrer array de vinculos. y buscar usuario que concuerde con el id. y verificar si el rol es admin.
     array.forEach(element => {
-     
+
+      //no esta funcionando esto:
+     if(element.user && element.user.id === userId && element.role === 0){
+        this.showButtonsResult = true;
+     }
     });
 
-    let userId = this.jwtPayload?.uid;
-    //buscar vinculo, si tiene permisos devuelvo true, esperar a martin.
-    return false;
+    //this.showButtonsResult = true;
+    return this.showButtonsResult;
   }
 
   //editTask

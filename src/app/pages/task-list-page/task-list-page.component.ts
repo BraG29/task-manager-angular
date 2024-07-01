@@ -68,7 +68,7 @@ export class TaskListPageComponent {
       this.userService.getProjectData(id).subscribe({
         next: (response) => {
           console.table(response);
-          //this.projectNames[id] = response.projectName;//projectName viene de IProject ponele
+          //this.projectNames[id] = response.title;//projectName viene de IProject ponele
         },
         error: (err) => {
           console.error(`Error al obtener datos del proyecto con ID ${id}:`, err);
