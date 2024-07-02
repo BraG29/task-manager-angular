@@ -3,18 +3,6 @@
 <div class="container text-center">
     <div class="row">
         <div class="col">
-            <div class="input-box" style="display: flex; float: left;">
-                
-                <input type="search" class="form-control" placeholder="Buscar">
-
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;">
-                    <path
-                        d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-        </div>
-        <div class="col">
             <!--TODO editar esta referencia a /home/createTask-->
             <a href="/home/createTask/">
                 <button class="btn btn-outline-primary" style="float: right;">Tarea Nueva</button>
@@ -25,31 +13,30 @@
     <div class="row">
         <div class="col-2">
             <ul class="list-group">
-                <strong>Tareas</strong>
+                <strong class="aaa">Tareas</strong>
                 @for (task of tasks; track task) {
-                    <li class="list-group-item list-group-item-secondary"> {{task.id}} </li>
+                    <li class=" aaa"> {{task.id}} </li>
                 }
             </ul>
         </div>
        
         <div class="col-4">
-            <strong>Titulo</strong>
+            <strong class="bbb">Titulo</strong>
             <ul class="list-group">
                 @for (task of tasks; track task) {
 
-                <a href="/home/showTask/{{task.id}}">
-                <li class="list-group-item list-group-item-secondary"> {{task.title}} </li>
+                <a style="text-decoration: none;" href="/home/showTask/{{task.id}}">
+                <li class="bbb" > {{task.title}} </li>
                 </a>
 
                 }
             </ul>
         </div>
-
         <div class="col-2">
             <strong>Estado</strong>
-            <ul class="list-group">
+            <ul style="justify-content: center; display: flex;align-items: center;" class="list-group">
                 @for (task of tasks; track task) {
-                    <li class="list-group-item list-group-item-secondary"> {{ task.taskState === 0 ? 'Activa' : 'Finalizada' }} </li>
+                    <li style="width: max-content; margin: 0.1em;" class="list-group-item list-group-item-light badge rounded-pill"> {{ task.taskState === 0 ? 'Activa' : 'Finalizada' }} </li>
                 }
             </ul>
         </div>
@@ -57,14 +44,15 @@
 
         <div class="col-4">
             <strong>Proyecto</strong>
-            <ul class="list-group">
+            <ul style="justify-content: center; display: flex;align-items: center;" class="list-group">
                 @for (task of tasks; track task) {
                     @if(projectNames[task.project]){
-                        <li class="list-group-item list-group-item-secondary"> {{ projectNames[task.project] }} </li>
+                        <li style="width: max-content; margin: 0.1em;" class="list-group-item list-group-item-light badge rounded-pill"> {{ projectNames[task.project] }} </li>
                     }
                 }
             </ul>
         </div>
+        
         
 
     </div>

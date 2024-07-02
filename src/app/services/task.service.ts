@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { ITask } from '../models/task';
-import { Observable } from 'rxjs';
-
+import { Observable , throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root'
@@ -33,10 +33,32 @@ export class TaskService {
 	}
 
 	updateTask(taskDTO: Partial<any>): Observable<any>{
+		console.log(taskDTO);
 		return this.http.put<ITask>(this.config.getConfig('apiUrl')+'/tasks/update', taskDTO);
 	}
 
-	deleteTask(taskDTO: Partial<any>) : Observable<any>{
-		return this.http.delete<ITask>(this.config.getConfig('apiUrl')+ '/tasks/delete', taskDTO);
+	deleteTask(taskId: number , userId: number | undefined) : Observable<any>{
+
+		const url = `${this.config.getConfig('apiUrl')}/tasks/delete?userId=${userId}&taskId=${taskId}`;
+    
+		return this.http.delete(url, { observe: 'response', responseType: 'text' }).pipe(
+			catchError((error: HttpErrorResponse) => {
+			  console.error('Error en la solicitud:', error);
+		
+			  // pelea con el mensaje de respuesta
+			  let errorMessage = 'Algo salió mal';
+			  
+			  try {
+				const errorObject = JSON.parse(error.error);
+				errorMessage = errorObject.message || errorMessage;
+			  } catch (e) {
+				console.error('No se pudo analizar la respuesta como JSON:', e);
+			  }
+		
+			  return throwError(() => new Error(errorMessage));
+			})
+		  );
 	}
+
+
 }

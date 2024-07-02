@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatCardModule} from '@angular/material/card';
@@ -36,7 +36,7 @@ export class TaskPageComponent implements OnInit {
 
   showButtonsResult: boolean = false;
 
-  constructor(private router: ActivatedRoute, private taskService: TaskService, private formBuilder: FormBuilder) {
+  constructor(private router: ActivatedRoute, private route: Router, private taskService: TaskService, private formBuilder: FormBuilder) {
 
     this.taskForm = this.formBuilder.group({
       name: [''],
@@ -73,7 +73,7 @@ export class TaskPageComponent implements OnInit {
         name: this.task.title,
         description: this.task.description,
         date: dateStr[0],
-        state: 'algo'
+        state: this.task.taskState
 
         });
       },
@@ -113,7 +113,7 @@ export class TaskPageComponent implements OnInit {
 
     //recorrer array de vinculos. y buscar usuario que concuerde con el id. y verificar si el rol es admin.
     array.forEach(element => {
-     if(element.user && element.user.id === userId && element.role === 1){
+     if(element.user && element.user.id === userId && element.role === 0){
         this.showButtonsResult = true;
      }
     });
@@ -144,6 +144,8 @@ export class TaskPageComponent implements OnInit {
             description: description,
             limitDate: date
           };
+
+          
           this.taskService.updateTask(taskDTO).subscribe({
             next: (response) => {
               Swal.fire({
@@ -182,30 +184,31 @@ export class TaskPageComponent implements OnInit {
         confirmButtonText: 'Si, actualizar'
       }).then((result) =>{
         if(result.isConfirmed){
-          const {state} = this.taskForm.value;
+          
 
-          const taskDTO = {
-            id: this.taskId,
-            userID: this.jwtPayload?.uid,
-            taskState: state
-          };
-          this.taskService.deleteTask(taskDTO).subscribe({
+          let nro = Number(this.taskId);
+          let taskId = nro;
+          let userId = this.jwtPayload?.uid;
+
+          this.taskService.deleteTask(taskId, userId).subscribe({
             next: (response) => {
-
               Swal.fire({
                 icon: 'success',
                 title: 'Eliminada',
                 text: 'Tarea eliminada con exito'
+              }).then(() =>{
+                this.route.navigate(['']);
               });
 
             },
             error: (err) =>{
+              console.table(err);
+
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text:  'Ocurrio un error al eliminar tarea',
-                footer: err
-              });
+                text:  'Ocurrio un error al eliminar tarea'
+              })
             }
           });
 
@@ -215,7 +218,7 @@ export class TaskPageComponent implements OnInit {
     }
   }
 
-  //endTask
+  //funca
   FinalizarTarea(): void {
     if(this.taskForm.valid){
       Swal.fire({
@@ -228,20 +231,25 @@ export class TaskPageComponent implements OnInit {
         confirmButtonText: 'Sí, finalizar'
       }).then((result) => {
         if(result.isConfirmed){
-          const { status } = this.taskForm.value; //data del form
+          const { state } = this.taskForm.value; //data del form
 
+          if(state === 0){ //si el estado es activa
           const taskDTO = {
             id: this.taskId, //id del usuario en sesion
             userID: this.jwtPayload?.uid,
-            status: status
+            taskState: 1 //le doy estado de finalizada
           };
+
           this.taskService.updateTask(taskDTO).subscribe({
+            
             next: (response) => {
               Swal.fire({
                 icon: 'success',
                 title: 'Finalizada',
                 text: 'Tarea finalizada con exito.'
-              })
+              }).then(() =>{
+                this.route.navigate(['']);
+              });
 
             },
             error: (err) => {
@@ -254,6 +262,8 @@ export class TaskPageComponent implements OnInit {
 
             }
           });
+        }
+          
         }
       });
 
