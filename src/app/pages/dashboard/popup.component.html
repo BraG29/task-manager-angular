@@ -1,0 +1,13 @@
+<form>
+  <mat-form-field>
+    <mat-label>Ingrese el email de Usuario</mat-label>
+    <input matInput [formControl]="email" />
+    @if(email.errors?.['email'] && email.touched){
+      <mat-error>Formato incorrecto</mat-error>
+    }
+    @if(email.errors?.['required'] && email.touched){
+      <mat-error>Debe ingresar un email</mat-error>
+    }
+  </mat-form-field>
+  <button mat-raised-button color="success">Aceptar</button>
+</form>

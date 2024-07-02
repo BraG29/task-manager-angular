@@ -1,0 +1,6 @@
+<mat-list role="list">
+  @for (link of links; track link.id){
+    <mat-list-item role="listitem"> {{link.user.name}} {{link.user.lastName}} </mat-list-item>
+  }
+  <button mat-raised-button (click)="addMember()">Añadir Integrante</button>
+</mat-list>
