@@ -16,9 +16,10 @@
   </div>
 
   <div>
-    <app-project-users (memberAction)="showPopup()"></app-project-users>
-    <app-project-tasks></app-project-tasks>
+    @if(selectedProject){
+      <app-project-users (memberAction)="showPopup()"></app-project-users>
+      <app-project-tasks [projectId]="selectedProject.id"></app-project-tasks>
+    }
   </div>
   <button mat-button class="bottom" (click)="saveChanges()">Guardar Cambios</button>
 </mat-sidenav-content>
-

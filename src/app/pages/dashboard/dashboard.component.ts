@@ -1,33 +1,23 @@
-import {AfterContentInit, Component, inject, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, Inject, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from "@angular/material/sidenav";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {IProject} from "../../models/project";
 import {ProjectService} from "../../services/project.service";
-import {jwtDecode, JwtPayload} from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import {IJWTPayLoad} from "../../models/jwt-payload";
 import {ProjectFormComponent} from "../../components/project-form/project-form.component";
 import {ProjectUsersComponent} from "../../components/project-users/project-users.component";
-import {IUser} from "../../models/user";
 import {ITask} from "../../models/task";
 import {ProjectTasksComponent} from "../../components/project-tasks/project-tasks.component";
 import {MatButton} from "@angular/material/button";
 import {ILink} from "../../models/link";
-import {MatDialog} from "@angular/material/dialog";
-import {MatError, MatFormField, MatInput, MatInputModule} from "@angular/material/input";
-<<<<<<< HEAD
-<<<<<<< HEAD
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import { MatFormField, MatInputModule} from "@angular/material/input";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-=======
-import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
->>>>>>> a25fd92 (merge)
-=======
-import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatOption, MatSelect} from "@angular/material/select";
+import {UserService} from "../../services/userServices/user.service";
+import {IInvitation} from "../../models/invitation";
 
-<<<<<<< HEAD
->>>>>>> 89aa58b (changes on interfaces)
-
-=======
->>>>>>> 1e979c6 (merge)
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -174,7 +164,12 @@ export class DashboardComponent implements AfterContentInit{
   }
 
   showPopup(){
-    this.dialog.open(PopupComponent);
+    this.dialog.open(PopupComponent, {
+      data: {
+        projectId: this.selectedProject?.id,
+        userId: this.userId
+      }
+    });
   }
 }
 
@@ -187,18 +182,24 @@ export class DashboardComponent implements AfterContentInit{
     MatFormField,
     ReactiveFormsModule,
     MatButton,
+    MatSelect,
+    MatOption,
   ],
 })
-<<<<<<< HEAD
-<<<<<<< HEAD
 export class PopupComponent implements OnInit{
   invitationForm: FormGroup = new FormGroup({});
+  roles = [
+    {value: 1, viewValue: 'EDITOR'},
+    {value: 2, viewValue: 'LECTOR'}
+  ]
 
   readonly email = new FormControl(
     '',
     [Validators.email, Validators.required])
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder,
+    private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -206,18 +207,23 @@ export class PopupComponent implements OnInit{
       email: [
         '',
         [Validators.email, Validators.required]],
+      role: ['', Validators.required]
     })
   }
-=======
-export class PopupComponent{
-  readonly email = new FormControl(
-    '',
-    [Validators.email, Validators.required])
->>>>>>> a25fd92 (merge)
-=======
-export class PopupComponent{
-  readonly email = new FormControl(
-    '',
-    [Validators.email, Validators.required])
->>>>>>> 89aa58b (changes on interfaces)
+
+  sendInvitation(){
+    console.log(this.invitationForm.get('role')?.value);
+    const invitation: IInvitation = {
+      invitedEmail: this.invitationForm.get('email')?.value,
+      ownerId: this.data.userId,
+      projectId: this.data.projectId,
+      role: this.invitationForm.get('role')?.value,
+    }
+
+    this.userService.inviteUser(invitation).subscribe({
+      next: response => console.table(response),
+      error: err => console.table(err),
+      complete: () => console.log('Peticion de invitacion finalizada')
+    });
+  }
 }

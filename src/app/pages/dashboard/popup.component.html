@@ -1,7 +1,7 @@
-<form>
+<form [formGroup]="invitationForm" (submit)="sendInvitation()">
   <mat-form-field>
     <mat-label>Ingrese el email de Usuario</mat-label>
-    <input matInput [formControl]="email" />
+    <input matInput formControlName="email" />
     @if(email.errors?.['email'] && email.touched){
       <mat-error>Formato incorrecto</mat-error>
     }
@@ -9,5 +9,17 @@
       <mat-error>Debe ingresar un email</mat-error>
     }
   </mat-form-field>
-  <button mat-raised-button color="success">Aceptar</button>
+  <mat-form-field>
+    <mat-label>Elija un Rol</mat-label>
+    <mat-select formControlName="role">
+      @for(role of roles; track role.value){
+        <mat-option [value]="role.value">
+          {{role.viewValue}}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="success" type="submit" [disabled]="invitationForm.invalid">
+    Aceptar
+  </button>
 </form>

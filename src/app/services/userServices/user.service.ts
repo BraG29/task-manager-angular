@@ -5,6 +5,7 @@ import {ConfigService} from "../config.service";
 import { IUser } from '../../models/user';
 import { ITask } from '../../models/task';
 import { IProject } from '../../models/project';
+import {IInvitation} from "../../models/invitation";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ export class UserService {
   updateUser(userDTO: Partial<IUser>): Observable<IUser>{
     return this.http.put<IUser>(this.configService.getConfig('apiUrl')+'/updateUser', userDTO);
   }
-  
+
+  inviteUser(invitation: Partial<IInvitation>){
+    const url = `${this.configService.getConfig('apiUrl')}/sendInvitation`;
+    return this.http.post(url, invitation);
+  }
 
 }
