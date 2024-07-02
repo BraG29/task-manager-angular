@@ -9,51 +9,57 @@
             </a>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-2">
-            <ul class="list-group">
-                <strong class="aaa">Tareas</strong>
-                @for (task of tasks; track task) {
-                    <li class=" aaa"> {{task.id}} </li>
-                }
-            </ul>
-        </div>
-       
-        <div class="col-4">
-            <strong class="bbb">Titulo</strong>
-            <ul class="list-group">
-                @for (task of tasks; track task) {
+    <br> 
 
-                <a style="text-decoration: none;" href="/home/showTask/{{task.id}}">
-                <li class="bbb" > {{task.title}} </li>
-                </a>
+    @if(tasks.length === 0){
+        <br>
+        <br>
+        <p>No hay tareas disponibles. Crea una y visualizala aquí</p>
+    } 
+    @else{
 
-                }
-            </ul>
-        </div>
-        <div class="col-2">
-            <strong>Estado</strong>
-            <ul style="justify-content: center; display: flex;align-items: center;" class="list-group">
-                @for (task of tasks; track task) {
-                    <li style="width: max-content; margin: 0.1em;" class="list-group-item list-group-item-light badge rounded-pill"> {{ task.taskState === 0 ? 'Activa' : 'Finalizada' }} </li>
-                }
-            </ul>
-        </div>
-
-
-        <div class="col-4">
-            <strong>Proyecto</strong>
-            <ul style="justify-content: center; display: flex;align-items: center;" class="list-group">
-                @for (task of tasks; track task) {
-                    @if(projectNames[task.project]){
-                        <li style="width: max-content; margin: 0.1em;" class="list-group-item list-group-item-light badge rounded-pill"> {{ projectNames[task.project] }} </li>
+        <div class="row">
+            <div class="col-2">
+                <ul class="list-group">
+                    <strong class="aaa">Tareas</strong>
+                    @for (task of tasks; track task) {
+                        <li class=" aaa"> {{task.id}} </li>
                     }
-                }
-            </ul>
-        </div>
-        
-        
+                </ul>
+            </div>
+           
+            <div class="col-4">
+                <strong class="bbb">Titulo</strong>
+                <ul class="list-group">
+                    @for (task of tasks; track task) {
+                    <a style="text-decoration: none;" href="/home/showTask/{{task.id}}">
+                    <li class="bbb" > {{task.title}} </li>
+                    </a>
+    
+                    }
+                </ul>
+            </div>
 
-    </div>
+            <div class="col-2">
+                <strong>Estado</strong>
+                <ul style="justify-content: center; display: flex;align-items: center;" class="list-group">
+                    @for (task of tasks; track task) {
+                        <li style="width: max-content; margin: 0.1em;" class="list-group-item list-group-item-light badge rounded-pill"> {{ task.taskState === 0 ? 'Activa' : 'Finalizada' }} </li>
+                    }
+                </ul>
+            </div>
+    
+            <div class="col-4">
+                <strong>Proyecto</strong>
+                <ul style="justify-content: center; display: flex;align-items: center;" class="list-group">
+                    @for (task of tasks; track task) {
+                        @if(projectNames[task.project]){
+                            <li style="width: max-content; margin: 0.1em;" class="list-group-item list-group-item-light badge rounded-pill"> {{ projectNames[task.project] }} </li>
+                        }
+                    }
+                </ul>
+            </div>    
+        </div>
+    } 
+
 </div>
