@@ -5,6 +5,6 @@ import {IProject} from "./project";
 export interface ITask extends ICreatable{
   limitDate: IDate,
   taskState: number,
-  project: IProject,
+  project: number,
   userID: number,
 }

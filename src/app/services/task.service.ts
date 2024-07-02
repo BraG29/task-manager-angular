@@ -24,4 +24,28 @@ export class TaskService {
 		return this.http.post<ITask>(this.config.getConfig('apiUrl')+'/tasks/create', taskDTO);
 	}
 
+	getTasks(id: number | undefined): Observable<ITask[]>{
+		return this.http.get<ITask[]>(this.config.getConfig('apiUrl') + '/tasksByUser/' + id);
+	}
+	
+	getTask(id:number | undefined): Observable<ITask>{
+		return this.http.get<ITask>(this.config.getConfig('apiUrl') + '/tasks/' + id); 
+	}
+
+	updateTask(taskDTO: Partial<any>): Observable<any>{
+		return this.http.put<any>(this.config.getConfig('apiUrl')+'/tasks/update', taskDTO);
+	}
+
+
+
+	/*
+	deleteTask(taskId:number | undefined, userId:number | undefined){
+
+		const params = {
+			taskId: taskId,
+			userId: userId
+		  };
+		
+		return this.http.delete<ITask>(this.config.getConfig('apiUrl')+ '/tasks/delete', params);
+	}*/
 }
