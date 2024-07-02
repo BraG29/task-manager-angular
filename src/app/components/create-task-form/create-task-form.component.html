@@ -1,0 +1,64 @@
+<mat-card>
+      <mat-card-header>
+        <mat-card-title>Dar de alta tarea</mat-card-title>
+      </mat-card-header>
+    
+      <mat-card-content>
+        <form [formGroup]="taskForm" (submit)="publishTaskEvent()">
+    
+          <!-- Title -->
+          <mat-form-field>
+            <input matInput placeholder="El titulo va aquí" formControlName="title">
+            @if (title?.errors?.['required'] && title?.touched){
+              <mat-error>
+                El campo titulo es obligatorio
+              </mat-error>
+            }
+          </mat-form-field>
+    <br>
+          <!-- Description -->
+          <mat-form-field>
+            <input matInput type="text" placeholder="La descripción va aquí" formControlName="description">
+            @if ( description?.errors?.['required'] && description?.touched){
+              <mat-error>
+                El campo descripción es obligatorio
+              </mat-error>
+            }
+          </mat-form-field>
+          <br>
+            <!-- limitDate -->
+                      <mat-form-field>
+                      <input matInput type="datetime-local" placeholder="" formControlName="limitDate">
+                      @if ( limitDate?.errors?.['required'] && limitDate?.touched){
+                        <mat-error>
+                          La fecha limite es obligatoria
+                        </mat-error>
+                      }
+                    </mat-form-field>
+                    <br>
+                      <!-- project -->
+
+                    <mat-form-field>
+                      <mat-label>Proyecto: </mat-label>
+
+                      <mat-select formControlName="project">
+                        @for (project of projects; track project) {
+                          <mat-option [value]="project.id">{{project.title}}</mat-option>
+                        }
+                      </mat-select>
+
+                      @if ( project?.errors?.['required'] && project?.touched){
+                        <mat-error>
+                          el proyecto es obligatorio
+                        </mat-error>
+                      }
+                    </mat-form-field> 
+                    <br>
+    
+          <button type="submit" mat-raised-button color="primary" [disabled]="taskForm.invalid">Dar de alta la tarea</button>
+    
+        </form>
+    
+      </mat-card-content>
+</mat-card>
+    

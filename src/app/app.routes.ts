@@ -46,12 +46,12 @@ export const routes: Routes = [
       {
         path: 'showTask/:taskId',
         component: TaskPageComponent
+      },
+      {
+        path: 'createTask',
+        component: CreateTaskPageComponent
       }
     ]
-  },
-  {
-    path: 'createTask',
-    component: CreateTaskPageComponent
   }
 
 ];
