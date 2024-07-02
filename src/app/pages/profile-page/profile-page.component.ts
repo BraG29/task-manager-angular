@@ -112,9 +112,6 @@ export class ProfilePageComponent implements OnInit {
           };
           this.userService.updateUser(userDTO).subscribe({
             next: (response) => {
-              //TODO alerta
-              console.log('User actualizado:', response);
-              //exito
               Swal.fire({
                 icon: 'success',
                 title: 'Actualizado',
@@ -123,9 +120,7 @@ export class ProfilePageComponent implements OnInit {
 
             },
             error: (err) => {
-              //TODO alerta
               console.error('Error al actualizar usuario:', err);
-
               //error
               Swal.fire({
                 icon: 'error',

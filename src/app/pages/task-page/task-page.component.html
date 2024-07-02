@@ -38,7 +38,8 @@
           }
 
           <br>
-          @if(showButtonsResult){
+          <!-- Compruebo si se pueden mostrar los botones y si la tarea no esta finalizada-->
+          @if(showButtonsResult && state?.value !== 0){
             <div class="col">
               <button style="margin-right: 10px;"  type="submit" [disabled]="taskForm.pristine" class="btn btn-dark btn-lg">Guardar Cambios</button>
   

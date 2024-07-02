@@ -16,4 +16,8 @@ export class ProjectService {
     return this.http.get<IProject[]>(url);
   }
 
+  getProjectData(id: number | undefined) : Observable<IProject>{
+    return this.http.get<IProject>(this.configService.getConfig('apiUrl') + '/GetProjectData/' + id);
+  }
+
 }

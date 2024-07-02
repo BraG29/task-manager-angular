@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/userServices/user.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -11,6 +10,7 @@ import { ITask } from '../../models/task';
 import { IJWTPayLoad } from '../../models/jwt-payload';
 import { jwtDecode } from 'jwt-decode';
 import { ILink } from '../../models/link';
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-task-page',
@@ -23,6 +23,9 @@ export class TaskPageComponent implements OnInit {
   
   taskForm: FormGroup = new FormGroup({});
 
+  @Output()
+  formAction: EventEmitter<{}> = new EventEmitter<{}>();
+
   taskId: string | null = null;
 
   task : ITask | undefined;
@@ -33,12 +36,13 @@ export class TaskPageComponent implements OnInit {
 
   showButtonsResult: boolean = false;
 
-  constructor(private router: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private router: ActivatedRoute, private taskService: TaskService, private formBuilder: FormBuilder) {
 
     this.taskForm = this.formBuilder.group({
       name: [''],
       description: [''],
-      date: ['']
+      date: [''],
+      state: ['']
     });
    }
 
@@ -49,8 +53,6 @@ export class TaskPageComponent implements OnInit {
     if(token){
       this.jwtPayload = jwtDecode(token);
     }
-
-
     this.taskId =  this.router.snapshot.paramMap.get('taskId'); //cargo la id que viene en la url
     this.loadTask();
    }
@@ -59,28 +61,27 @@ export class TaskPageComponent implements OnInit {
   loadTask() : void{
     let id = Number(this.taskId);
 
-    this.userService.getTask(id).subscribe({
+    this.taskService.getTask(id).subscribe({
       next: (response) => {
 
         this.task = response;
-
         this.links = response.links;
-
         this.showButtons(this.links)
-        
         let dateStr = this.task.limitDate.date.split(' '); //split de la fecha me quedo con el primero lugar del array.        
         this.taskForm.patchValue({
+
         name: this.task.title,
         description: this.task.description,
-        date: dateStr[0]
+        date: dateStr[0],
+        state: 'algo'
+
         });
       }, 
         error: (err) => {
-        console.error('Error al cargar tarea:', err);
         Swal.fire({
           icon: 'error',
           title:'Error',
-          text: 'Ha ocurrido un error al cargar tarea.'
+          text: 'Ha ocurrido un error al cargar tarea.' + err
         })
       }
     });
@@ -98,11 +99,13 @@ export class TaskPageComponent implements OnInit {
     return this.taskForm.get('date');
   }
 
-  //mostrar botones
+  get state(){
+    return this.taskForm.get('state');
+  }
+
+  //mostrar botones, TODO ocultar botones cuando la tarea esta finalizada.
   showButtons(array: ILink[] | undefined) : boolean{
     
-    console.table('Array parametro'+array);
-
     if (!array) {
       return false;
     }
@@ -110,30 +113,152 @@ export class TaskPageComponent implements OnInit {
 
     //recorrer array de vinculos. y buscar usuario que concuerde con el id. y verificar si el rol es admin.
     array.forEach(element => {
-
-      //no esta funcionando esto:
-     if(element.user && element.user.id === userId && element.role === 0){
+     if(element.user && element.user.id === userId && element.role === 1){
         this.showButtonsResult = true;
      }
     });
 
-    //this.showButtonsResult = true;
     return this.showButtonsResult;
   }
 
-  //editTask
+  //funca
   GuardarCambios(): void {
-   //llamar al service para actualizar tarea
+    if(this.taskForm.valid){
+
+      Swal.fire({
+        title : '¿Estas seguro?',
+        text: '¿Deseas actualizar esta tarea?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, actualizar'
+      }).then((result) => {
+        if(result.isConfirmed){
+          const { name, description, date } = this.taskForm.value; //data del form
+
+          const taskDTO = {
+            id: this.taskId, 
+            userID: this.jwtPayload?.uid,
+            title: name,
+            description: description,
+            limitDate: date
+          };
+          this.taskService.updateTask(taskDTO).subscribe({
+            next: (response) => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Actualizada',
+                text: 'Tarea actualizada con exito'
+              })
+
+            },
+            error: (err) => {
+              Swal.fire({
+                icon: 'error',
+                title:'Error',
+                text: 'Ha ocurrido un error al actualizar la tarea' + err
+              })
+
+            }
+          });
+        }
+      });
+
+      this.formAction.emit(this.taskForm.value);
+    }
   }
 
   //deleteTask
   EliminarTarea(): void {
-    //llamar al service para eliminar tarea
+    if(this.taskForm.valid){
+      Swal.fire({
+        title: '¿Estas seguro?',
+        text: 'Deseas eliminar esta tarea?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, actualizar'
+      }).then((result) =>{
+        if(result.isConfirmed){
+          const {state} = this.taskForm.value;
+
+          const taskDTO = {
+            id: this.taskId,
+            userID: this.jwtPayload?.uid,
+            taskState: state
+          };
+          this.taskService.deleteTask(taskDTO).subscribe({
+            next: (response) => {
+              
+              Swal.fire({
+                icon: 'success',
+                title: 'Eliminada',
+                text: 'Tarea eliminada con exito'
+              });
+
+            },
+            error: (err) =>{
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text:  'Ocurrio un error al eliminar tarea',
+                footer: err
+              });
+            }
+          });
+
+        }
+      });
+      this.formAction.emit(this.taskForm.value);
+    }
   }
 
   //endTask
   FinalizarTarea(): void {
-    //llamar al service para finalizar/actualizar estado de tarea
+    if(this.taskForm.valid){
+      Swal.fire({
+        title : '¿Estas seguro?',
+        text: '¿Deseas finalizar la tarea?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, finalizar'
+      }).then((result) => {
+        if(result.isConfirmed){
+          const { status } = this.taskForm.value; //data del form
+
+          const taskDTO = {
+            id: this.taskId, //id del usuario en sesion
+            userID: this.jwtPayload?.uid,
+            status: status
+          };
+          this.taskService.updateTask(taskDTO).subscribe({
+            next: (response) => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Finalizada',
+                text: 'Tarea finalizada con exito.'
+              })
+
+            },
+            error: (err) => {
+              Swal.fire({
+                icon: 'error',
+                title:'Error',
+                text: 'Ha ocurrido un error al finalizar la tarea',
+                footer: err
+              })
+
+            }
+          });
+        }
+      });
+
+      this.formAction.emit(this.taskForm.value);
+    }
   }
 
 }

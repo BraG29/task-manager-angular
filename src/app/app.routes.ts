@@ -42,24 +42,16 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent
+      },
+      {
+        path: 'showTask/:taskId',
+        component: TaskPageComponent
       }
     ]
   },
   {
-    path: 'profile',
-    component: ProfilePageComponent
-  },
-  {
-    path: 'tasklist',
-    component: TaskListPageComponent
-  },
-  {
     path: 'createTask',
     component: CreateTaskPageComponent
-  },
-  {
-    path: 'showTask/:taskId',
-    component: TaskPageComponent
   }
 
 
