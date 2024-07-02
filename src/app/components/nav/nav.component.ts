@@ -9,8 +9,8 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatFooterCell, MatFooterRow} from "@angular/material/table";
-import {IJWTPayLoad} from "../../models/jwt-payload";
 import {jwtDecode} from "jwt-decode";
+import {IJWTPayLoad} from "../../models/jwt-payload";
 
 @Component({
   selector: 'app-nav',
@@ -54,8 +54,6 @@ export class NavComponent implements OnInit{
     if(this.jwtPayload){
       this.userFullName = `${this.jwtPayload?.name} ${this.jwtPayload?.lastName}`;
     }
-
-
   }
 
   logOut(){

@@ -1,4 +1,24 @@
-<mat-sidenav-container class="example-container">
-  <mat-sidenav opened mode="side" position="end">End content</mat-sidenav>
-</mat-sidenav-container>
-Middle Content
+<mat-sidenav fixedInViewport class="sidenav" opened mode="side" position="end">
+  <h4>Tus Proyectos</h4>
+
+  <mat-nav-list>
+    @for (project of projects; track project.id) {
+      <a mat-list-item (click)="selectProject(project)">
+        <span>{{ project.title }}</span>
+      </a>
+    }
+    <button mat-button class="bottom" (click)="newProject()">Crear Proyecto</button>
+  </mat-nav-list>
+</mat-sidenav>
+<mat-sidenav-content>
+  <div>
+    <app-project-form></app-project-form>
+  </div>
+
+  <div>
+    <app-project-users (memberAction)="showPopup()"></app-project-users>
+    <app-project-tasks></app-project-tasks>
+  </div>
+  <button mat-button class="bottom" (click)="saveChanges()">Guardar Cambios</button>
+</mat-sidenav-content>
+

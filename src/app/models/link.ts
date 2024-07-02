@@ -3,9 +3,9 @@ import {ICreatable} from "./creatable";
 import {IUser} from "./user";
 
 export interface ILink {
-  id: number,
-  creationDate: IDate,
+  id: number | null,
+  creationDate: IDate | null,
   role: number,
-  creatable: ICreatable,
+  creatable: ICreatable | null,
   user: IUser
 }

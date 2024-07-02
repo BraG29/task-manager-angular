@@ -1,8 +1,8 @@
 import {ILink} from "./link";
 
 export interface ICreatable {
-  id: number,
+  id: number | null,
   title: string,
-  description: string,
-  links: ILink[]
+  description: string | null,
+  links: ILink[] | undefined
 }

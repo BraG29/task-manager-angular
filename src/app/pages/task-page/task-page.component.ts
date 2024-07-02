@@ -20,7 +20,7 @@ import { TaskService } from '../../services/task.service';
   styleUrl: './task-page.component.scss'
 })
 export class TaskPageComponent implements OnInit {
-  
+
   taskForm: FormGroup = new FormGroup({});
 
   @Output()
@@ -30,8 +30,8 @@ export class TaskPageComponent implements OnInit {
 
   task : ITask | undefined;
 
-  links : ILink[] = [];
-  
+  links : ILink[] | undefined = [];
+
   jwtPayload : IJWTPayLoad | undefined;
 
   showButtonsResult: boolean = false;
@@ -67,7 +67,7 @@ export class TaskPageComponent implements OnInit {
         this.task = response;
         this.links = response.links;
         this.showButtons(this.links)
-        let dateStr = this.task.limitDate.date.split(' '); //split de la fecha me quedo con el primero lugar del array.        
+        let dateStr = this.task.limitDate.date.split(' ');
         this.taskForm.patchValue({
 
         name: this.task.title,
@@ -76,7 +76,7 @@ export class TaskPageComponent implements OnInit {
         state: 'algo'
 
         });
-      }, 
+      },
         error: (err) => {
         Swal.fire({
           icon: 'error',
@@ -85,8 +85,8 @@ export class TaskPageComponent implements OnInit {
         })
       }
     });
-  } 
-  
+  }
+
   get name(){
     return this.taskForm.get('name');
   }
@@ -105,7 +105,7 @@ export class TaskPageComponent implements OnInit {
 
   //mostrar botones, TODO ocultar botones cuando la tarea esta finalizada.
   showButtons(array: ILink[] | undefined) : boolean{
-    
+    console.table('Array parametro'+array);
     if (!array) {
       return false;
     }
@@ -138,7 +138,7 @@ export class TaskPageComponent implements OnInit {
           const { name, description, date } = this.taskForm.value; //data del form
 
           const taskDTO = {
-            id: this.taskId, 
+            id: this.taskId,
             userID: this.jwtPayload?.uid,
             title: name,
             description: description,
@@ -191,7 +191,7 @@ export class TaskPageComponent implements OnInit {
           };
           this.taskService.deleteTask(taskDTO).subscribe({
             next: (response) => {
-              
+
               Swal.fire({
                 icon: 'success',
                 title: 'Eliminada',
