@@ -23,8 +23,11 @@ import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 =======
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 
+<<<<<<< HEAD
 >>>>>>> 89aa58b (changes on interfaces)
 
+=======
+>>>>>>> 1e979c6 (merge)
 @Component({
   selector: 'app-dashboard',
   standalone: true,
