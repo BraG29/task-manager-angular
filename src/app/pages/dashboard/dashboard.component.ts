@@ -14,7 +14,11 @@ import {MatButton} from "@angular/material/button";
 import {ILink} from "../../models/link";
 import {MatDialog} from "@angular/material/dialog";
 import {MatError, MatFormField, MatInput, MatInputModule} from "@angular/material/input";
+<<<<<<< HEAD
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+=======
+import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+>>>>>>> a25fd92 (merge)
 
 @Component({
   selector: 'app-dashboard',
@@ -177,6 +181,7 @@ export class DashboardComponent implements AfterContentInit{
     MatButton,
   ],
 })
+<<<<<<< HEAD
 export class PopupComponent implements OnInit{
   invitationForm: FormGroup = new FormGroup({});
 
@@ -194,4 +199,10 @@ export class PopupComponent implements OnInit{
         [Validators.email, Validators.required]],
     })
   }
+=======
+export class PopupComponent{
+  readonly email = new FormControl(
+    '',
+    [Validators.email, Validators.required])
+>>>>>>> a25fd92 (merge)
 }
