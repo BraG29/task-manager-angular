@@ -33,19 +33,10 @@ export class TaskService {
 	}
 
 	updateTask(taskDTO: Partial<any>): Observable<any>{
-		return this.http.put<any>(this.config.getConfig('apiUrl')+'/tasks/update', taskDTO);
+		return this.http.put<ITask>(this.config.getConfig('apiUrl')+'/tasks/update', taskDTO);
 	}
 
-
-
-	/*
-	deleteTask(taskId:number | undefined, userId:number | undefined){
-
-		const params = {
-			taskId: taskId,
-			userId: userId
-		  };
-		
-		return this.http.delete<ITask>(this.config.getConfig('apiUrl')+ '/tasks/delete', params);
-	}*/
+	deleteTask(taskDTO: Partial<any>) : Observable<any>{
+		return this.http.delete<ITask>(this.config.getConfig('apiUrl')+ '/tasks/delete', taskDTO);
+	}
 }

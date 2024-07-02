@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { UserService } from '../../services/userServices/user.service';
 import {Router} from "@angular/router";
 import Swal from 'sweetalert2';
 import { IJWTPayLoad } from '../../models/jwt-payload';
@@ -39,24 +37,20 @@ export class TaskListPageComponent {
     this.loadTasks();
   }
 
-  //TODO buscar nombres de proyectos.
   loadTasks() : void{
     this.taskService.getTasks(this.jwtPayload?.uid).subscribe({
       next: (response) => {
-        this.tasks = response;
-        
-        console.table(response);
-        this.tasks.forEach(task =>{ //buscar por cada tarea el nombre del proyecto
 
+        this.tasks = response;
+        this.tasks.forEach(task =>{ //buscar por cada tarea el nombre del proyecto
           this.getProjectName(task.project);
         });
 
       },error: (err) => {
-        console.error('Error al cargar tareas:', err);
         Swal.fire({
           icon: 'error',
           title:'Error',
-          text: 'Ha ocurrido un error al cargar tareas.'
+          text: 'Ha ocurrido un error al cargar tareas.' + err
         })
       } 
     });
@@ -67,15 +61,13 @@ export class TaskListPageComponent {
     if (!this.projectNames[id]) {
       this.projetService.getProjectData(id).subscribe({
         next: (response) => {
-          console.table(response);
           this.projectNames[id] = response.title;//projectName viene de IProject ponele
         },
         error: (err) => {
           console.error(`Error al obtener datos del proyecto con ID ${id}:`, err);
         }
       });
-    }
-      
+    }   
   }
 
 }

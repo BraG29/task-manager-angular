@@ -37,6 +37,7 @@ export class LoginPageComponent implements OnInit{
           this.router.navigate(['/home']);
         }
       },
+      //TODO error alert
       error: (e) => console.table(e),
       complete: () => console.info('Petición de Login finalizada')
     });

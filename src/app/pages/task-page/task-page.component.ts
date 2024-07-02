@@ -53,8 +53,6 @@ export class TaskPageComponent implements OnInit {
     if(token){
       this.jwtPayload = jwtDecode(token);
     }
-
-
     this.taskId =  this.router.snapshot.paramMap.get('taskId'); //cargo la id que viene en la url
     this.loadTask();
    }
@@ -67,11 +65,8 @@ export class TaskPageComponent implements OnInit {
       next: (response) => {
 
         this.task = response;
-
         this.links = response.links;
-
         this.showButtons(this.links)
-        
         let dateStr = this.task.limitDate.date.split(' '); //split de la fecha me quedo con el primero lugar del array.        
         this.taskForm.patchValue({
 
@@ -83,11 +78,10 @@ export class TaskPageComponent implements OnInit {
         });
       }, 
         error: (err) => {
-        console.error('Error al cargar tarea:', err);
         Swal.fire({
           icon: 'error',
           title:'Error',
-          text: 'Ha ocurrido un error al cargar tarea.'
+          text: 'Ha ocurrido un error al cargar tarea.' + err
         })
       }
     });
@@ -119,8 +113,6 @@ export class TaskPageComponent implements OnInit {
 
     //recorrer array de vinculos. y buscar usuario que concuerde con el id. y verificar si el rol es admin.
     array.forEach(element => {
-
-      //probar cuando termine martin:
      if(element.user && element.user.id === userId && element.role === 1){
         this.showButtonsResult = true;
      }
@@ -133,7 +125,6 @@ export class TaskPageComponent implements OnInit {
   GuardarCambios(): void {
     if(this.taskForm.valid){
 
-      //alerta de confirmacion.
       Swal.fire({
         title : '¿Estas seguro?',
         text: '¿Deseas actualizar esta tarea?',
@@ -147,7 +138,7 @@ export class TaskPageComponent implements OnInit {
           const { name, description, date } = this.taskForm.value; //data del form
 
           const taskDTO = {
-            id: this.taskId, //id del usuario en sesion
+            id: this.taskId, 
             userID: this.jwtPayload?.uid,
             title: name,
             description: description,
@@ -155,8 +146,6 @@ export class TaskPageComponent implements OnInit {
           };
           this.taskService.updateTask(taskDTO).subscribe({
             next: (response) => {
-              console.log('Tarea actualizada:', response);
-              //exito
               Swal.fire({
                 icon: 'success',
                 title: 'Actualizada',
@@ -165,13 +154,10 @@ export class TaskPageComponent implements OnInit {
 
             },
             error: (err) => {
-              //TODO alerta
-              console.error('Error al actualizar tarea:', err);
-              //error
               Swal.fire({
                 icon: 'error',
                 title:'Error',
-                text: 'Ha ocurrido un error al actualizar la tarea'
+                text: 'Ha ocurrido un error al actualizar la tarea' + err
               })
 
             }
@@ -185,14 +171,53 @@ export class TaskPageComponent implements OnInit {
 
   //deleteTask
   EliminarTarea(): void {
-    console.log('eliminar tarea');
+    if(this.taskForm.valid){
+      Swal.fire({
+        title: '¿Estas seguro?',
+        text: 'Deseas eliminar esta tarea?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, actualizar'
+      }).then((result) =>{
+        if(result.isConfirmed){
+          const {state} = this.taskForm.value;
+
+          const taskDTO = {
+            id: this.taskId,
+            userID: this.jwtPayload?.uid,
+            taskState: state
+          };
+          this.taskService.deleteTask(taskDTO).subscribe({
+            next: (response) => {
+              
+              Swal.fire({
+                icon: 'success',
+                title: 'Eliminada',
+                text: 'Tarea eliminada con exito'
+              });
+
+            },
+            error: (err) =>{
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text:  'Ocurrio un error al eliminar tarea',
+                footer: err
+              });
+            }
+          });
+
+        }
+      });
+      this.formAction.emit(this.taskForm.value);
+    }
   }
 
   //endTask
   FinalizarTarea(): void {
     if(this.taskForm.valid){
-
-      //alerta de confirmacion.
       Swal.fire({
         title : '¿Estas seguro?',
         text: '¿Deseas finalizar la tarea?',
@@ -208,12 +233,10 @@ export class TaskPageComponent implements OnInit {
           const taskDTO = {
             id: this.taskId, //id del usuario en sesion
             userID: this.jwtPayload?.uid,
-            status: 'algo'
+            status: status
           };
           this.taskService.updateTask(taskDTO).subscribe({
             next: (response) => {
-              console.log('Tarea actualizada:', response);
-              //exito
               Swal.fire({
                 icon: 'success',
                 title: 'Finalizada',
@@ -222,13 +245,11 @@ export class TaskPageComponent implements OnInit {
 
             },
             error: (err) => {
-              //TODO alerta
-              console.error('Error al finalizar tarea:', err);
-              //error
               Swal.fire({
                 icon: 'error',
                 title:'Error',
-                text: 'Ha ocurrido un error al finalizar la tarea'
+                text: 'Ha ocurrido un error al finalizar la tarea',
+                footer: err
               })
 
             }

@@ -34,7 +34,7 @@ export class SignupPageComponent implements OnInit{
       this.userService.createUser(userDTO).subscribe({
         next: (response) => {
           console.log('User created:', response);
-          //exito
+
           Swal.fire({
             icon: 'success',
             title: 'Exito',
@@ -43,12 +43,11 @@ export class SignupPageComponent implements OnInit{
 
         },
         error: (err) => {
-          console.error('Error al crear cuenta:', err);
-          //error
           Swal.fire({
             icon: 'error',
             title:'Error',
-            text: 'Ha ocurrido un error al crear la cuenta'
+            text: 'Ha ocurrido un error al crear la cuenta',
+            footer: err
           })
 
         }
