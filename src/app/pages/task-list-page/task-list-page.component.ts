@@ -34,6 +34,7 @@ export class TaskListPageComponent {
       this.jwtPayload = jwtDecode(token);
     }
 
+    
     this.loadTasks();
   }
 
@@ -41,11 +42,12 @@ export class TaskListPageComponent {
     this.taskService.getTasks(this.jwtPayload?.uid).subscribe({
       next: (response) => {
 
-        this.tasks = response;
-        this.tasks.forEach(task =>{ //buscar por cada tarea el nombre del proyecto
-          this.getProjectName(task.project);
-        });
-
+        this.tasks = response || [];
+        if(this.tasks.length > 0){
+          this.tasks.forEach(task =>{ //buscar por cada tarea el nombre del proyecto
+            this.getProjectName(task.project);
+          });
+        }
       },error: (err) => {
         Swal.fire({
           icon: 'error',

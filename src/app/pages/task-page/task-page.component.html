@@ -6,6 +6,7 @@
             <h1 class="card-title">Datos de una tarea</h1>
           </div>
  
+          
           <label for="nameId" class="form-label">Nombre: </label>
           <input matInput class="form-control form-control-lg" type="text" aria-label="Nombre: "
               formControlName="name">
@@ -39,7 +40,7 @@
 
           <br>
           <!-- Compruebo si se pueden mostrar los botones y si la tarea no esta finalizada-->
-          @if(showButtonsResult && state?.value !== 0){
+          @if(showButtonsResult && state?.value === 0){
             <div class="col">
               <button style="margin-right: 10px;"  type="submit" [disabled]="taskForm.pristine" class="btn btn-dark btn-lg">Guardar Cambios</button>
   
