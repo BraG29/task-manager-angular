@@ -171,7 +171,7 @@ export class TaskPageComponent implements OnInit {
     }
   }
 
-  //deleteTask
+  //funca
   EliminarTarea(): void {
     if(this.taskForm.valid){
       Swal.fire({

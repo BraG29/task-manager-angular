@@ -39,6 +39,7 @@ export class TaskService {
 
 	deleteTask(taskId: number , userId: number | undefined) : Observable<any>{
 
+		
 		const url = `${this.config.getConfig('apiUrl')}/tasks/delete?userId=${userId}&taskId=${taskId}`;
     
 		return this.http.delete(url, { observe: 'response', responseType: 'text' }).pipe(

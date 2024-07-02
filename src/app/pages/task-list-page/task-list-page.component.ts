@@ -34,6 +34,7 @@ export class TaskListPageComponent {
       this.jwtPayload = jwtDecode(token);
     }
 
+    
     this.loadTasks();
   }
 
