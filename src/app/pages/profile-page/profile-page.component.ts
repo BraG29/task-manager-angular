@@ -63,8 +63,7 @@ export class ProfilePageComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Backend error',
-          footer: err.message
+          text: 'Backend error'
         });
       }
     });

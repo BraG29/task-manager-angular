@@ -12,11 +12,12 @@ import {ProjectTasksComponent} from "../../components/project-tasks/project-task
 import {MatButton} from "@angular/material/button";
 import {ILink} from "../../models/link";
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
-import { MatFormField, MatInputModule} from "@angular/material/input";
+import {MatFormField, MatInputModule} from "@angular/material/input";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {UserService} from "../../services/userServices/user.service";
 import {IInvitation} from "../../models/invitation";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +36,7 @@ import {IInvitation} from "../../models/invitation";
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements AfterContentInit{
+export class DashboardComponent implements AfterContentInit {
   userId: number = 0;
   projects: IProject[] = [];
   tokenPayload: IJWTPayLoad | undefined;
@@ -53,7 +54,7 @@ export class DashboardComponent implements AfterContentInit{
 
   constructor(private projectService: ProjectService) {
     const token = sessionStorage.getItem('token');
-    if(token){
+    if (token) {
       this.tokenPayload = jwtDecode(token);
     }
   }
@@ -61,7 +62,7 @@ export class DashboardComponent implements AfterContentInit{
   ngAfterContentInit() {
 
 
-    if(this.tokenPayload){
+    if (this.tokenPayload) {
       this.userId = this.tokenPayload.uid;
     }
 
@@ -78,7 +79,7 @@ export class DashboardComponent implements AfterContentInit{
     });
   }
 
-  selectProject(project: IProject){
+  selectProject(project: IProject) {
     this.selectedProject = project;
     this.projectFormComponent?.setFormValues(project.title, project.description)
 
@@ -98,7 +99,7 @@ export class DashboardComponent implements AfterContentInit{
     this.projectTasksComponent?.setTasks(selectedTasks);
   }
 
-  newProject(){
+  newProject() {
     let blankProject: IProject = {
       title: "Nuevo Proyecto",
       id: 0,
@@ -111,7 +112,7 @@ export class DashboardComponent implements AfterContentInit{
     this.projects.push(blankProject);
   }
 
-  saveChanges(){
+  saveChanges() {
 
     console.log('Entrando a Save Changes')
 
@@ -124,19 +125,30 @@ export class DashboardComponent implements AfterContentInit{
       state: true
     }
 
-    if(this.selectedProject){
+    if (this.selectedProject) {
       console.log("Hay proyecto seleccionado")
       // @ts-ignore
-      if(this.selectedProject?.id > 0){
+      if (this.selectedProject?.id > 0) {
         console.log("Id es mayor a 0")
         newProject.id = this.selectedProject?.id;
         this.projectService.updateProject(newProject, this.userId).subscribe({
-          next: response => console.table(response),
-          error: err => console.table(err),
+          next: response => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Proyecto Actualizado',
+              text: `Se ha actualizado el proyecto: ${newProject?.title}`
+            })
+          },
+          error: err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Ha habido un error',
+            })
+          },
           complete: () => console.log('Peticion de update finalizada')
         });
 
-      }else{
+      } else {
         console.log("Id es 0")
         newProject.links?.push({
           id: null,
@@ -154,8 +166,19 @@ export class DashboardComponent implements AfterContentInit{
         })
         console.table(newProject);
         this.projectService.createProject(newProject).subscribe({
-          next: response => console.table(response),
-          error: err => console.table(err),
+          next: response => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Proyecto Creado',
+              text: `Se ha creado el proyecto: ${newProject?.title}`
+            })
+          },
+          error: err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Ha habido un error',
+            })
+          },
           complete: () => console.log("Peticion de create finalizada")
         });
       }
@@ -163,7 +186,7 @@ export class DashboardComponent implements AfterContentInit{
     }
   }
 
-  showPopup(){
+  showPopup() {
     this.dialog.open(PopupComponent, {
       data: {
         projectId: this.selectedProject?.id,
@@ -186,7 +209,7 @@ export class DashboardComponent implements AfterContentInit{
     MatOption,
   ],
 })
-export class PopupComponent implements OnInit{
+export class PopupComponent implements OnInit {
   invitationForm: FormGroup = new FormGroup({});
   roles = [
     {value: 1, viewValue: 'EDITOR'},
@@ -198,8 +221,8 @@ export class PopupComponent implements OnInit{
     [Validators.email, Validators.required])
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private userService: UserService) {
+              private formBuilder: FormBuilder,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -211,7 +234,7 @@ export class PopupComponent implements OnInit{
     })
   }
 
-  sendInvitation(){
+  sendInvitation() {
     console.log(this.invitationForm.get('role')?.value);
     const invitation: IInvitation = {
       invitedEmail: this.invitationForm.get('email')?.value,
@@ -221,8 +244,19 @@ export class PopupComponent implements OnInit{
     }
 
     this.userService.inviteUser(invitation).subscribe({
-      next: response => console.table(response),
-      error: err => console.table(err),
+      next: response =>{
+        Swal.fire({
+          icon: 'success',
+          title: 'Se ha enviado la invitacion'
+        })
+      },
+      error: err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Ha habido un error',
+          text: `${err.error.error}`
+        })
+      },
       complete: () => console.log('Peticion de invitacion finalizada')
     });
   }
