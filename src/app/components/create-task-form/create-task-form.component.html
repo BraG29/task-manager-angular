@@ -38,6 +38,7 @@
                     <br>
                       <!-- project -->
 
+                      @if (!projectId) {
                     <mat-form-field>
                       <mat-label>Proyecto: </mat-label>
 
@@ -52,7 +53,8 @@
                           el proyecto es obligatorio
                         </mat-error>
                       }
-                    </mat-form-field> 
+                    </mat-form-field>
+                  } 
                     <br>
     
           <button type="submit" mat-raised-button color="primary" [disabled]="taskForm.invalid">Dar de alta la tarea</button>

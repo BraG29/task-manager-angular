@@ -10,6 +10,7 @@ import {IJWTPayLoad} from "../../models/jwt-payload";
 import { IProject } from '../../models/project';
 import {MatSelectModule} from '@angular/material/select'; 
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -36,10 +37,12 @@ export class CreateTaskFormComponent implements OnInit{
 	submitTask: EventEmitter<{}> = new EventEmitter<{}>();
 
 	//we do the forbidden sorcery known as "dependency injection"
-	constructor(private formBuilder: FormBuilder, private projectService: ProjectService, private router: Router)  {}
+	constructor(private formBuilder: FormBuilder, private projectService: ProjectService, private router: Router, private activatedRouter: ActivatedRoute)  {}
 
 	//idk anymore lmao
 	private userID = 0;
+
+	projectId: string | null = null;
 
 	//on this init we load all the validators for the form
 	ngOnInit(): void {
@@ -58,15 +61,23 @@ export class CreateTaskFormComponent implements OnInit{
 
 		}
 
+		this.projectId =  this.activatedRouter.snapshot.paramMap.get('projectId'); //cargo la id que viene en la url
+		console.log(this.projectId);
+		console.log("AAAAAAAAAAAAAAAA")
+
+
 		this.taskForm = this.formBuilder.group({
 			title: ['', [Validators.required, ]],
 			description: ['', Validators.required],
 			limitDate: ['', Validators.required],
-			project: ['',Validators.required]
+			project: [!this.projectId ? '' : this.projectId, Validators.required]
 
 		    });
 
 		this.loadProjects();
+
+	
+
 	}
 //     }
 

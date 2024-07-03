@@ -33,13 +33,13 @@ export class ProjectTasksComponent {
 
   addTask(){
     console.log('Id del proyecto: ' + this.projectId);
-    let navigationExtras: NavigationExtras = {
-      state: {
-        projectId: this.projectId
-      }
-    };
+    // let navigationExtras: NavigationExtras = {
+    //   state: {
+    //     projectId: this.projectId
+    //   }
+    // };
 
-    this.router.navigate(['/home/createTask'], navigationExtras);
+    this.router.navigate(['/home/createTask/' + this.projectId]);
 
   }
 }
