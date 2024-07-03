@@ -6,6 +6,7 @@ import { CreateTaskFormComponent } from '../../components/create-task-form/creat
 import {IJWTPayLoad} from "../../models/jwt-payload";
 import {jwtDecode} from "jwt-decode";
 import Swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -28,10 +29,12 @@ export class CreateTaskPageComponent implements OnInit {
 	userID = 0;
 
 
+
 	//just like PHP, this is how I inject something into my class, or my component in Angular's case
 	//the OG object I want to inject has to have a specific attribute thingy on it
-	constructor(private router: Router, private taskService:TaskService){}
+	constructor(private router: Router, private taskService:TaskService, private activatedRouter: ActivatedRoute){}
 
+	projectId: string | null = null;
 
 	//this function gets called when the page gets rendered
 	ngOnInit(): void {
@@ -48,11 +51,10 @@ export class CreateTaskPageComponent implements OnInit {
 		if(this.jwtPayload){//here we ask for encrypted data on the jwtPayload
 			this.user = `${this.jwtPayload?.name} ${this.jwtPayload?.lastName}`;
 			this.userID = this.jwtPayload.uid;
-
 		}
 
-		//console.log(this.user); 
-		//console.log(this.userID);
+		this.projectId =  this.activatedRouter.snapshot.paramMap.get('projectId'); //cargo la id que viene en la url
+		console.log(this.projectId);
 	}
 
 	getDateNow(): string {
@@ -77,55 +79,113 @@ export class CreateTaskPageComponent implements OnInit {
 
 	createTask(value: any){
 
-		//we extract all the data we got from the form we sent with Angular
-		let  {title, description, limitDate, project} = value;
+		if(!this.projectId || this.projectId === undefined){
 
-		console.log(value);
- 
-		//we build the Json/body/ITask/array/whatever  to send to our taskService and call our PHP's API
-		const body = {
-			id: 0,
-			title,
-			description,
-			limitDate,
-			taskState: 1,
-			project,
-			userID: this.userID
+				//we extract all the data we got from the form we sent with Angular
+			let  {title, description, limitDate, project} = value;
+
+			console.log(value);
+	
+			//we build the Json/body/ITask/array/whatever  to send to our taskService and call our PHP's API
+			const body = {
+				id: 0,
+				title,
+				description,
+				limitDate,
+				taskState: 1,
+				project,
+				userID: this.userID
+			}
+
+			//we call the taskService to call our API from PHP 
+			this.taskService.createTask(body).subscribe({
+
+				//next gives me response if the request went correctly, and saves the data we received
+				next: (response) =>{
+
+					//we log the response in a fancy way
+					console.table(response);
+
+					//we make a Sweet Alert for the user to read
+					Swal.fire({
+						title: "Tarea creada con éxito!",
+						text: "La tarea "+ body.title + " se dió de alta correctamente",
+						icon: "success"
+					})
+				},
+
+				//"error" gets called when something breaks up during the call of the OG function
+				error: (e) => {
+
+					//again, we print the error in a fancy way
+					console.table(e);
+
+					Swal.fire({
+						title: "ERROR!",
+						text: JSON.stringify(e.error.error),
+						icon: "error"
+					})
+
+				},
+
+				//finally{}, literally a try and catch type of finally{}
+				complete:() =>{ console.info("Se dió de alta la tarea" + body.title + "correctamente")}
+			});
+
+		}else{
+
+			//we extract all the data we got from the form we sent with Angular
+			let  {title, description, limitDate, project} = value;
+
+			console.log(value);
+	
+			//we build the Json/body/ITask/array/whatever  to send to our taskService and call our PHP's API
+			const body = {
+				id: 0,
+				title,
+				description,
+				limitDate,
+				taskState: 1,
+				project,
+				userID: this.userID
+			}
+
+			//we call the taskService to call our API from PHP 
+			this.taskService.createTask(body).subscribe({
+
+				//next gives me response if the request went correctly, and saves the data we received
+				next: (response) =>{
+
+					//we log the response in a fancy way
+					console.table(response);
+
+					//we make a Sweet Alert for the user to read
+					Swal.fire({
+						title: "Tarea creada con éxito!",
+						text: "La tarea "+ body.title + " se dió de alta correctamente",
+						icon: "success"
+					})
+				},
+
+				//"error" gets called when something breaks up during the call of the OG function
+				error: (e) => {
+
+					//again, we print the error in a fancy way
+					console.table(e);
+
+					Swal.fire({
+						title: "ERROR!",
+						text: JSON.stringify(e.error.error),
+						icon: "error"
+					})
+
+				},
+
+				//finally{}, literally a try and catch type of finally{}
+				complete:() =>{ console.info("Se dió de alta la tarea" + body.title + "correctamente")}
+			});
 		}
 
-		//we call the taskService to call our API from PHP 
-		this.taskService.createTask(body).subscribe({
-
-			//next gives me response if the request went correctly, and saves the data we received
-			next: (response) =>{
-
-				//we log the response in a fancy way
-				console.table(response);
-
-				//we make a Sweet Alert for the user to read
-				Swal.fire({
-					title: "Tarea creada con éxito!",
-					text: "La tarea "+ body.title + " se dió de alta correctamente",
-					icon: "success"
-				})
-			},
-
-			//"error" gets called when something breaks up during the call of the OG function
-			error: (e) => {
-
-				//again, we print the error in a fancy way
-				console.table(e);
-
-				Swal.fire({
-					title: "ERROR!",
-					text: JSON.stringify(e.error.error),
-					icon: "error"
-				})
-
-			},
-
-			//finally{}, literally a try and catch type of finally{}
-			complete:() =>{ console.info("Se dió de alta la tarea" + body.title + "correctamente")}
-		});
 	}
+		
 }

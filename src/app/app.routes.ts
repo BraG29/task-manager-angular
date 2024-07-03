@@ -8,6 +8,7 @@ import { TaskListPageComponent } from './pages/task-list-page/task-list-page.com
 import { CreateTaskPageComponent } from './pages/create-task-page/create-task-page.component';
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {tokenExistsGuard, tokenNoExists} from "./guards/token.guard";
+import { CreateTaskFormComponent } from './components/create-task-form/create-task-form.component';
 
 export const routes: Routes = [
   {
@@ -49,6 +50,10 @@ export const routes: Routes = [
       },
       {
         path: 'createTask',
+        component: CreateTaskPageComponent
+      },
+      {
+        path: 'createTask/:projectId',
         component: CreateTaskPageComponent
       }
     ]
