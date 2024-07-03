@@ -45,8 +45,7 @@ export class SignupPageComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Ha ocurrido un error al crear la cuenta',
-          footer: err
+          text: 'Ha ocurrido un error al crear la cuenta'
         })
       }
     });

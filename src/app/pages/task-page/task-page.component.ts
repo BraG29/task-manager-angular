@@ -256,8 +256,7 @@ export class TaskPageComponent implements OnInit {
               Swal.fire({
                 icon: 'error',
                 title:'Error',
-                text: 'Ha ocurrido un error al finalizar la tarea',
-                footer: err
+                text: 'Ha ocurrido un error al finalizar la tarea'
               })
 
             }
