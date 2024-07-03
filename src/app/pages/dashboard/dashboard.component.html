@@ -1,4 +1,4 @@
-<mat-sidenav fixedInViewport class="sidenav" opened mode="side" position="end">
+<mat-sidenav style="text-align: center;"  fixedInViewport class="sidenav" opened mode="side" position="end">
   <h4>Tus Proyectos</h4>
 
   <mat-nav-list>
@@ -7,19 +7,33 @@
         <span>{{ project.title }}</span>
       </a>
     }
-    <button mat-button class="bottom" (click)="newProject()">Crear Proyecto</button>
+    <button mat-raised-button style="margin: auto; margin-top: 2em;"  (click)="newProject()">Crear Proyecto</button>
   </mat-nav-list>
 </mat-sidenav>
-<mat-sidenav-content>
+<mat-sidenav-content style="margin: auto; margin-left: -200px; width: 70%;">
   <div>
     <app-project-form></app-project-form>
+    <button mat-raised-button style="margin-top: 10px;" (click)="saveChanges()">Guardar Cambios</button>
   </div>
+<!--style="bottom: 0; margin: auto; width: fit-content; "-->
+  <br>
 
   <div>
     @if(selectedProject){
-      <app-project-users (memberAction)="showPopup()"></app-project-users>
-      <app-project-tasks [projectId]="selectedProject.id"></app-project-tasks>
+      <div class="container">
+        <div class="row">
+    
+          <div class="col" style="padding: 0;">
+            <app-project-users (memberAction)="showPopup()"></app-project-users>
+          </div>
+    
+          <div class="col" style="padding: 0;">
+            <app-project-tasks [projectId]="selectedProject.id"></app-project-tasks>
+          </div>
+
+        </div>
+      </div>
     }
   </div>
-  <button mat-button class="bottom" (click)="saveChanges()">Guardar Cambios</button>
+  
 </mat-sidenav-content>

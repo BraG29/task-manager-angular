@@ -1,6 +1,6 @@
+<button mat-raised-button (click)="addTask()">Añadir Tarea</button>
 <mat-list role="list">
   @for (task of tasks; track task.id){
     <mat-list-item role="listitem"> {{task.title}} </mat-list-item>
   }
-  <button mat-raised-button (click)="addTask()">Añadir Tarea</button>
 </mat-list>
