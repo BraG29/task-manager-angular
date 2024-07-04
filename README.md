@@ -20,8 +20,3 @@ One of them is for example `"apiUrl"`, you could change this if you need for the
   "apiUrl": "localhost:8080"
 }
 ```
-
-## First example
-To test the application, after you deploy it with `ng serve` you can go to http://localhost:4200 and try to log in.
-You should use real user credential in the api database from server side (PHP). If is all ok you should see a blank page
-with the only text: "home-page works!".
