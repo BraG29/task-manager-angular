@@ -92,7 +92,7 @@ export class CreateTaskPageComponent implements OnInit {
 				title,
 				description,
 				limitDate,
-				taskState: 1,
+				taskState: 0,
 				project,
 				userID: this.userID
 			}
@@ -145,7 +145,7 @@ export class CreateTaskPageComponent implements OnInit {
 				title,
 				description,
 				limitDate,
-				taskState: 1,
+				taskState: 0,
 				project,
 				userID: this.userID
 			}
