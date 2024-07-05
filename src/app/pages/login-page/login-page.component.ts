@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {LoginFormComponent} from "../../components/login-form/login-form.component";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-login-page',
@@ -38,7 +40,17 @@ export class LoginPageComponent implements OnInit{
         }
       },
       //TODO error alert
-      error: (e) => console.table(e),
+      error: (e) => {
+
+        console.table(e);
+        Swal.fire({
+          title: "ERROR!",
+          text: "Las creedenciales están incorrectas",
+          icon: "error"
+        })
+
+
+      },
       complete: () => console.info('Petición de Login finalizada')
     });
   }
